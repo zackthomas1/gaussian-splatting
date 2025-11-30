@@ -51,7 +51,7 @@ If you receive an error like `The GPUS-ALL-REGIONS-per-project quota maximum has
 
 Once the VM is running, click the **SSH** button in the console, or use the gcloud command:
 ```bash
-gcloud compute ssh gaussian-splatting-vm
+gcloud compute ssh zackt@gaussian-splatting-vm
 ```
 
 ## 4. Setup the Environment
@@ -148,7 +148,7 @@ You need to get your COLMAP or NeRF Synthetic dataset onto the VM.
 ### Option A: Upload from Local Machine (using gcloud)
 ```bash
 # Run this on your LOCAL machine
-gcloud compute scp --recurse /path/to/your/dataset gaussian-splatting-vm:~/gaussian-splatting/data/
+gcloud compute scp --recurse /path/to/your/dataset zackt@gaussian-splatting-vm:~/gaussian-splatting/data/
 ```
 
 ### Option B: Download directly to VM
@@ -196,19 +196,15 @@ Download the trained model folder to your local machine and view it locally.
 
 ```bash
 # Run on LOCAL machine
-gcloud compute scp --recurse gaussian-splatting-vm:~/gaussian-splatting/output/your-model-id ./local-models/
+gcloud compute scp --recurse zackt@gaussian-splatting-vm:gaussian-splatting/output/your-model-id ./local-models/
 ```
-Then run the viewer locally:
-```bash
-./SIBR_gaussianViewer_app -m ./local-models/your-model-id
-```
-
+  
 ### Option B: Remote Viewer
 You can use the Network Viewer to monitor training.
 1. On VM, start training with a known IP/Port (or default).
 2. On Local machine, use SSH tunneling to forward the port (default 6009).
    ```bash
-   gcloud compute ssh gaussian-splatting-vm -- -L 6009:localhost:6009
+   gcloud compute ssh zackt@gaussian-splatting-vm -- -L 6009:localhost:6009
    ```
 3. Run `SIBR_remoteGaussian_app` locally.
 
@@ -217,7 +213,7 @@ If you ran `render.py` and just want to view the resulting image frames:
 
 ```bash
 # Replace <YOUR_MODEL_DIR> with your actual model folder name
-gcloud compute scp --recurse gaussian-splatting-vm:~/gaussian-splatting/output/<YOUR_MODEL_DIR>/train ./local-renders/
+gcloud compute scp --recurse zackt@gaussian-splatting-vm:~/gaussian-splatting/output/<YOUR_MODEL_DIR>/train ./local-renders/
 ```
 You can then open the `./local-renders/` folder on your computer to view the standard image files (e.g., .png or .jpg).
 
