@@ -366,27 +366,39 @@ def compute_pose_from_essential(E: np.ndarray, pts1: np.ndarray, pts2: np.ndarra
 
 def save_ply(points_3d: np.ndarray, colors: np.ndarray, output_path: str):
     """
-    Save point cloud to PLY format for visualization.
+    Save point cloud to PLY format for visualization and Gaussian Splatting training.
+    Includes zero normals to match expected format.
     
     Args:
         points_3d: Nx3 array of 3D points
         colors: Nx3 array of RGB colors (0-255)
         output_path: Path to output PLY file
     """
-    with open(output_path, 'w') as f:
-        # Write header
+    # Ensure arrays are properly shaped
+    points_3d = np.array(points_3d).reshape(-1, 3)
+    colors = np.array(colors).reshape(-1, 3)
+    
+    # Clamp colors to valid range
+    colors = np.clip(colors, 0, 255).astype(np.uint8)
+    
+    with open(output_path, 'w', newline='') as f:
+        # Write header with normals (required by Gaussian Splatting)
         f.write('ply\n')
         f.write('format ascii 1.0\n')
         f.write(f'element vertex {len(points_3d)}\n')
         f.write('property float x\n')
         f.write('property float y\n')
         f.write('property float z\n')
+        f.write('property float nx\n')
+        f.write('property float ny\n')
+        f.write('property float nz\n')
         f.write('property uchar red\n')
         f.write('property uchar green\n')
         f.write('property uchar blue\n')
         f.write('end_header\n')
         
-        # Write points
+        # Write points with zero normals (all on one line per point)
         for point, color in zip(points_3d, colors):
-            f.write(f'{point[0]} {point[1]} {point[2]} ')
-            f.write(f'{int(color[0])} {int(color[1])} {int(color[2])}\n')
+            x, y, z = float(point[0]), float(point[1]), float(point[2])
+            r, g, b = int(color[0]), int(color[1]), int(color[2])
+            f.write(f'{x} {y} {z} 0.0 0.0 0.0 {r} {g} {b}\n')

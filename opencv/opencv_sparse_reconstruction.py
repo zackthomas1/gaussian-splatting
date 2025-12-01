@@ -328,20 +328,23 @@ class SparseReconstructor:
                 
                 if img_id in self.matches_graph and other_id in self.matches_graph[img_id]:
                     match_data = self.matches_graph[img_id][other_id]
+                    matches = match_data['matches']
+                    
+                    for match in matches:
+                        kp_idx_other = match.trainIdx
+                        # Bounds check
+                        if kp_idx_other < len(img_other['point3D_ids']) and img_other['point3D_ids'][kp_idx_other] != -1:
+                            num_3d_correspondences += 1
+                            
                 elif other_id in self.matches_graph and img_id in self.matches_graph[other_id]:
                     match_data = self.matches_graph[other_id][img_id]
-                    # Swap for consistency
-                    img_id, other_id = other_id, img_id
-                else:
-                    continue
-                
-                matches = match_data['matches']
-                
-                for match in matches:
-                    kp_idx_other = match.trainIdx if img_id < other_id else match.queryIdx
-                    # Bounds check
-                    if kp_idx_other < len(img_other['point3D_ids']) and img_other['point3D_ids'][kp_idx_other] != -1:
-                        num_3d_correspondences += 1
+                    matches = match_data['matches']
+                    
+                    for match in matches:
+                        kp_idx_other = match.queryIdx
+                        # Bounds check
+                        if kp_idx_other < len(img_other['point3D_ids']) and img_other['point3D_ids'][kp_idx_other] != -1:
+                            num_3d_correspondences += 1
             
             if num_3d_correspondences > best_score:
                 best_score = num_3d_correspondences
