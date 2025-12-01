@@ -229,7 +229,7 @@ ls data/your-scene/sparse/0/
 
 **Transfer dataset to vm**
 ```
-gcloud compute scp --recurse data\silverlake zackt@gaussian-splatting-vm:~/gaussian-splatting/data/ --zone=us-west1-a
+gcloud compute scp --recurse data\silverlake zackt@gaussian-splatting-vm:gaussian-splatting/data/ --zone=us-west1-a
 ```
 ---
 
