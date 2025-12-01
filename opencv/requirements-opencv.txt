@@ -1,0 +1,7 @@
+# OpenCV Camera Calibration and Sparse Reconstruction Requirements
+# These packages are needed in addition to the base Gaussian Splatting environment
+
+opencv-python>=4.8.0
+opencv-contrib-python>=4.8.0
+scipy>=1.10.0
+tqdm>=4.65.0
