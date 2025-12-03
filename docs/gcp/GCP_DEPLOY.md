@@ -148,7 +148,7 @@ You need to get your COLMAP or NeRF Synthetic dataset onto the VM.
 ### Option A: Upload from Local Machine (using gcloud)
 ```bash
 # Run this on your LOCAL machine
-gcloud compute scp --recurse /path/to/your/dataset zackt@gaussian-splatting-vm:~/gaussian-splatting/data/
+gcloud compute scp --recurse ./data/<input dataset> zackt@gaussian-splatting-vm:~/gaussian-splatting/data/
 ```
 
 ### Option B: Download directly to VM
